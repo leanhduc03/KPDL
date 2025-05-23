@@ -69,7 +69,7 @@ with tab1:
         x = pd.DataFrame(new_sample)
         with open("../Artifacts/log_reg_covid1.sav", 'rb') as f:
             __log_reg_covid1 = joblib.load(f)
-        predict = str(__log_reg_covid1.predict(x)[0])
+        predict = __log_reg_covid1.predict(x)[0]
         return predict
 
     if st.button('Compute a prediction'):
