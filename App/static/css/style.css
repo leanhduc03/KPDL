@@ -1,0 +1,87 @@
+/* Kiểu cho toàn bộ trang */
+body {
+    background: url('../images/background.png') no-repeat center center fixed;
+    background-size: cover;
+    background-attachment: fixed;
+    color: #000000;
+    padding: 0;
+    margin: 0;
+    min-height: 100vh;
+    position: relative;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* If you want an overlay, add background color here */
+    /* background-color: rgba(0,0,0,0.5); */
+    z-index: -1;
+}
+
+.container {
+    max-width: 1200px;
+    margin-top: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Kiểu cho tabs */
+.nav-tabs {
+    border-radius: 6px;
+    margin-left: auto; margin-right: -300px; 
+    width: 60%;  /* Chiều rộng tùy chỉnh */
+
+}
+
+.nav-tabs .nav-link {
+    margin-top: 40px;
+    background-color: #333333;
+    color: white;
+    font-size: 20px;
+    flex-grow: 1;
+    text-align: center;
+    margin-right: 1px; /* Small gap between tabs */
+    border: none; /* Remove default borders */
+}
+
+.nav-tabs .nav-link.active {
+    background-color: #333333 !important;
+    color: white !important;
+    border-radius: 6px; /* Only round the top corners */
+    border: 1px solid #ddd;
+
+}
+
+/* Kiểu cho các thẻ card */
+.card {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-left: auto; margin-right: -300px; 
+    width: 60%;  /* Chiều rộng tùy chỉnh */
+}
+
+/* Kiểu cho các button */
+.btn-primary {
+    background-color: #333333;
+    border: none;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #000000;
+}

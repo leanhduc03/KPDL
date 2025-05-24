@@ -1,0 +1,144 @@
+/* Kiểu cho thông báo kết quả */
+.success-msg {
+    background-color: rgba(40, 167, 69, 0.9);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.error-msg {
+    background-color: rgba(220, 53, 69, 0.9);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Kiểu cho form */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-control {
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    color: #333333;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.form-control:focus {
+    background-color: #ffffff;
+    color: #000000;
+    border-color: #666666;
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.15);
+}
+
+label {
+    font-weight: 600;
+    color: #333333;
+}
+
+/* Kiểu cho slider */
+input[type=range] {
+    height: 25px;
+    -webkit-appearance: none;
+    margin: 10px 0;
+    width: 100%;
+    background-color: transparent;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 5px;
+    cursor: pointer;
+    animate: 0.2s;
+    box-shadow: 0px 0px 0px #000000;
+    background: #666666;
+    border-radius: 5px;
+    border: 0px solid #000000;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    box-shadow: 0px 0px 0px #000000;
+    border: 1px solid #333333;
+    height: 18px;
+    width: 18px;
+    border-radius: 25px;
+    background: #333333;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -7px;
+}
+
+.form-group output {
+    color: #333333;
+    font-weight: bold;
+}
+/* CSS cho nút Predict */
+.btn-primary.btn-lg {
+    background-color: #333333;
+    border: none;
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-primary.btn-lg:hover {
+    background-color: #000000;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary.btn-lg:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+/* CSS cho các thông báo kết quả dự đoán */
+.error-msg, .success-msg {
+    padding: 3px;
+    border-radius: 8px;
+    margin-top: 25px;
+    animation: fadeIn 0.5s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.error-msg {
+    background-color: rgba(220, 53, 69, 0.15);
+    border-left: 5px solid #dc3545;
+    color: #721c24;
+}
+
+.success-msg {
+    background-color: rgba(40, 167, 69, 0.15);
+    border-left: 5px solid #28a745;
+    color: #155724;
+}
+
+.error-msg h3, .success-msg h3 {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0;
+    padding: 10px;
+}
+
+/* Hiệu ứng xuất hiện cho thông báo */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

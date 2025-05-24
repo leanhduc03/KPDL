@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 class="text-center mb-4">Prediction of Covid-19 Mortality</h1>
+    
+    <form method="POST" action="/">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="USMER">USMER</label>
+                    <select class="form-control" name="USMER" id="USMER">
+                        <option value="1" {% if form_data.USMER == 1 %}selected{% endif %}>1</option>
+                        <option value="2" {% if form_data.USMER == 2 %}selected{% endif %}>2</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="MEDICAL_UNIT">Medical Unit (1-13)</label>
+                    <input type="range" class="form-control-range" id="MEDICAL_UNIT" name="MEDICAL_UNIT" 
+                           min="1" max="13" value="{{ form_data.MEDICAL_UNIT }}" 
+                           oninput="this.nextElementSibling.value = this.value">
+                    <output>{{ form_data.MEDICAL_UNIT }}</output>
+                </div>
+                
+                <div class="form-group">
+                    <label for="PATIENT_TYPE">Patient Type</label>
+                    <select class="form-control" name="PATIENT_TYPE" id="PATIENT_TYPE">
+                        <option value="1" {% if form_data.PATIENT_TYPE == 1 %}selected{% endif %}>1</option>
+                        <option value="2" {% if form_data.PATIENT_TYPE == 2 %}selected{% endif %}>2</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="PNEUMONIA">Pneumonia</label>
+                    <select class="form-control" name="PNEUMONIA" id="PNEUMONIA">
+                        <option value="1" {% if form_data.PNEUMONIA == 1 %}selected{% endif %}>1</option>
+                        <option value="2" {% if form_data.PNEUMONIA == 2 %}selected{% endif %}>2</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="DIABETES">Diabetes</label>
+                    <select class="form-control" name="DIABETES" id="DIABETES">
+                        <option value="1" {% if form_data.DIABETES == 1 %}selected{% endif %}>1</option>
+                        <option value="2" {% if form_data.DIABETES == 2 %}selected{% endif %}>2</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="HIPERTENSION">Hypertension</label>
+                    <select class="form-control" name="HIPERTENSION" id="HIPERTENSION">
+                        <option value="1" {% if form_data.HIPERTENSION == 1 %}selected{% endif %}>1</option>
+                        <option value="2" {% if form_data.HIPERTENSION == 2 %}selected{% endif %}>2</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="RENAL_CHRONIC">Chronic Kidney Disease</label>
+                    <select class="form-control" name="RENAL_CHRONIC" id="RENAL_CHRONIC">
+                        <option value="1" {% if form_data.RENAL_CHRONIC == 1 %}selected{% endif %}>1</option>
+                        <option value="2" {% if form_data.RENAL_CHRONIC == 2 %}selected{% endif %}>2</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="CLASIFFICATION_FINAL">Final Classification</label>
+                    <select class="form-control" name="CLASIFFICATION_FINAL" id="CLASIFFICATION_FINAL">
+                        <option value="1" {% if form_data.CLASIFFICATION_FINAL == 1 %}selected{% endif %}>1</option>
+                        <option value="2" {% if form_data.CLASIFFICATION_FINAL == 2 %}selected{% endif %}>2</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="AGE">Patient Age</label>
+            <input type="range" class="form-control-range" id="AGE" name="AGE" 
+                   min="0" max="120" value="{{ form_data.AGE }}" 
+                   oninput="this.nextElementSibling.value = this.value">
+            <output>{{ form_data.AGE }}</output>
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-lg mt-3">Predict</button>
+    </form>
+    
+    {% if prediction_text %}
+        <div class="{% if result == 1 %}error-msg{% else %}success-msg{% endif %} mt-4 text-center">
+            <h3>{{ prediction_text }}</h3>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,110 +1,86 @@
-import json
-import streamlit as st
+import os
+from flask import Flask, render_template, request, jsonify, url_for, send_from_directory
 import joblib
 import pandas as pd
-from streamlit_lottie import st_lottie
-from pygwalker.api.streamlit import StreamlitRenderer
 
-# 1. Page config
-st.set_page_config(
-    page_title="🧊 Logistic Regression - Covid-19",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
+# Khởi tạo Flask app với đường dẫn đúng cho thư mục static
+app = Flask(__name__, static_folder='static')
 
-# 2. Custom CSS for dark mode & background image
-st.markdown("""
-    <style>
-        html, body {
-            background-color: #1e1e2f;
-            color: #f0f0f0;
-        }
-        .stTabs [role="tablist"] {
-            justify-content: center;
-        }
-        .stTabs [role="tab"] {
-            flex-grow: 1;
-            text-align: center;
-            font-size: 20px;
-        }
-        .stTabs [aria-selected="true"] {
-            background-color: #4a90e2 !important;
-            color: white !important;
-            border-radius: 6px;
-        }
-        .css-1aumxhk {
-            color: white;
-        }
+# Đảm bảo cấu hình phục vụ file tĩnh
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    return send_from_directory(app.static_folder, filename)
+
+# Hàm dự đoán Covid-19
+def predict_covid(
+        USMER, MEDICAL_UNIT, PATIENT_TYPE, PNEUMONIA,
+        AGE, DIABETES, HIPERTENSION, RENAL_CHRONIC, CLASIFFICATION_FINAL):
+
+    new_sample = pd.DataFrame({
+        "USMER": [USMER],
+        "MEDICAL_UNIT": [MEDICAL_UNIT],
+        "PATIENT_TYPE": [PATIENT_TYPE],
+        "PNEUMONIA": [PNEUMONIA],
+        "AGE": [AGE],
+        "DIABETES": [DIABETES],
+        "HIPERTENSION": [HIPERTENSION],
+        "RENAL_CHRONIC": [RENAL_CHRONIC],
+        "CLASIFFICATION_FINAL": [CLASIFFICATION_FINAL],
+    })
+
+    with open("../Artifacts/grand_boost_covid.sav", 'rb') as f:
+        model = joblib.load(f)
+
+    prediction = model.predict(new_sample)[0]
+    return prediction
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    # Thiết lập giá trị mặc định
+    form_data = {
+        'USMER': 1,
+        'MEDICAL_UNIT': 1,
+        'PATIENT_TYPE': 1,
+        'PNEUMONIA': 1,
+        'AGE': 55,
+        'DIABETES': 1,
+        'HIPERTENSION': 1,
+        'RENAL_CHRONIC': 1,
+        'CLASIFFICATION_FINAL': 1
+    }
+    
+    result = None
+    prediction_text = ""
+    
+    if request.method == 'POST':
+        # Lấy dữ liệu từ form
+        form_data['USMER'] = int(request.form.get('USMER'))
+        form_data['MEDICAL_UNIT'] = int(request.form.get('MEDICAL_UNIT'))
+        form_data['PATIENT_TYPE'] = int(request.form.get('PATIENT_TYPE'))
+        form_data['PNEUMONIA'] = int(request.form.get('PNEUMONIA'))
+        form_data['AGE'] = int(request.form.get('AGE'))
+        form_data['DIABETES'] = int(request.form.get('DIABETES'))
+        form_data['HIPERTENSION'] = int(request.form.get('HIPERTENSION'))
+        form_data['RENAL_CHRONIC'] = int(request.form.get('RENAL_CHRONIC'))
+        form_data['CLASIFFICATION_FINAL'] = int(request.form.get('CLASIFFICATION_FINAL'))
         
-        [data-testid="stVerticalBlockBorderWrapper"] {
-            margin-bottom: 12px;
-        }
- 
-    </style>
-""", unsafe_allow_html=True)
-
-# 3. Load Lottie Animation
-
-
-# 4. Tabs
-tab1, tab2 = st.tabs(['🏠 Trang chính', '📊 Trực quan dữ liệu'])
-
-with tab1:
-    st.title("🧪 Dự đoán tử vong do Covid-19 bằng Logistic Regression")
-
-    st.markdown("Điền thông tin bên dưới:")
-
-    col1, col2 = st.columns(2)
-    with col1:
-        USMER = st.selectbox('USMER', [1, 2], index=1)
-        MEDICAL_UNIT = st.slider('Đơn vị y tế (1-13)', 1, 13, 1)
-        PATIENT_TYPE = st.selectbox('Loại bệnh nhân', [1, 2])
-        PNEUMONIA = st.selectbox('Viêm phổi', [1, 2])
-
-    with col2:
-        DIABETES = st.selectbox('Tiểu đường', [1, 2])
-        with st.container():
-            HIPERTENSION = st.selectbox('Tăng huyết áp', [1, 2])
-        RENAL_CHRONIC = st.selectbox('Suy thận mạn', [1, 2])
-        CLASIFFICATION_FINAL = st.selectbox('Phân loại cuối', [1, 2])
-        
-    AGE = st.slider('Tuổi bệnh nhân', 0, 120, 65)
-
-    def predict_covid(
-            USMER, MEDICAL_UNIT, PATIENT_TYPE, PNEUMONIA,
-            AGE, DIABETES, HIPERTENSION, RENAL_CHRONIC, CLASIFFICATION_FINAL):
-
-        new_sample = pd.DataFrame({
-            "USMER": [USMER],
-            "MEDICAL_UNIT": [MEDICAL_UNIT],
-            "PATIENT_TYPE": [PATIENT_TYPE],
-            "PNEUMONIA": [PNEUMONIA],
-            "AGE": [AGE],
-            "DIABETES": [DIABETES],
-            "HIPERTENSION": [HIPERTENSION],
-            "RENAL_CHRONIC": [RENAL_CHRONIC],
-            "CLASIFFICATION_FINAL": [CLASIFFICATION_FINAL],
-        })
-
-        with open("../Artifacts/log_reg_covid1.sav", 'rb') as f:
-            model = joblib.load(f)
-
-        prediction = model.predict(new_sample)[0]
-        return prediction
-
-    if st.button('🚀 Dự đoán ngay', use_container_width=True):
+        # Dự đoán
         result = predict_covid(
-            USMER, MEDICAL_UNIT, PATIENT_TYPE, PNEUMONIA,
-            AGE, DIABETES, HIPERTENSION, RENAL_CHRONIC, CLASIFFICATION_FINAL
+            form_data['USMER'], form_data['MEDICAL_UNIT'], form_data['PATIENT_TYPE'], 
+            form_data['PNEUMONIA'], form_data['AGE'], form_data['DIABETES'], 
+            form_data['HIPERTENSION'], form_data['RENAL_CHRONIC'], form_data['CLASIFFICATION_FINAL']
         )
+        
         if result == 1:
-            st.error("☠️ Kết quả: Tỷ lệ tử vong **CAO**")
+            prediction_text = "Result: High mortality rate"
         else:
-            st.success("💪 Kết quả: Tỷ lệ tử vong **THẤP**")
+            prediction_text = "Result: Low mortality rate"
+    
+    return render_template('index.html', result=result, prediction_text=prediction_text, form_data=form_data)
 
-with tab2:
-    st.subheader("📊 Trực quan hóa dữ liệu bệnh nhân")
-
+@app.route('/visualization')
+def visualization():
+    # Đọc và xử lý dữ liệu
     df = pd.read_csv("Covid Data.csv")
 
     # Làm sạch dữ liệu
@@ -119,8 +95,11 @@ with tab2:
     df = df[df['PREGNANT'].isin([1, 2])]
     df['CLASIFFICATION_FINAL'] = df['CLASIFFICATION_FINAL'].replace([1, 2, 3], 1)
     df['CLASIFFICATION_FINAL'] = df['CLASIFFICATION_FINAL'].replace([4, 5, 6, 7], 2)
+    
+    # Chuyển DataFrame thành dạng JSON để hiển thị
+    data_json = df.head(100).to_json(orient='records')
+    
+    return render_template('visualization.html', data_json=data_json)
 
-    st.markdown("Dữ liệu bên dưới đã được xử lý và sẵn sàng cho việc khám phá:")
-
-    pyg_app = StreamlitRenderer(df, spec='../Artifacts/streamlit.json')
-    pyg_app.explorer()
+if __name__ == '__main__':
+    app.run(debug=True)

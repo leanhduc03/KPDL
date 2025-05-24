@@ -1,0 +1,42 @@
+/* Kiểu cho bảng dữ liệu */
+.table {
+    background-color: rgba(255, 255, 255, 0.95);
+    color: #333333;
+    border: 1px solid #ddd;
+}
+
+.table thead th {
+    background-color: #333333;
+    color: white;
+    border-color: #ddd;
+}
+
+.table td, .table th {
+    border-color: #ddd;
+    padding: 10px;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Thêm các kiểu riêng cho trang visualization */
+.viz-container {
+    overflow-x: auto;
+    margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chart-container {
+    min-height: 400px;
+    margin-bottom: 30px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 5px;
+    padding: 15px;
+    border: 1px solid #ddd;
+}
+
+.table-responsive {
+    max-height: 600px;
+    overflow-y: auto;
+}

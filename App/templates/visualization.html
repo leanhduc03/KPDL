@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/visualization.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2 class="mb-4">Trực quan hóa dữ liệu bệnh nhân</h2>
+    <p>Dữ liệu bên dưới đã được xử lý và sẵn sàng cho việc khám phá:</p>
+    
+    <div class="viz-container">
+        <div class="table-responsive">
+            <table class="table table-dark table-hover">
+                <thead>
+                    <tr id="header-row"></tr>
+                </thead>
+                <tbody id="data-body"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Nhận dữ liệu JSON
+    const data = JSON.parse('{{ data_json|safe }}');
+    
+    // Hiển thị bảng dữ liệu
+    function populateTable(data) {
+        // Tạo header
+        const headerRow = document.getElementById('header-row');
+        const columns = Object.keys(data[0]);
+        
+        columns.forEach(column => {
+            const th = document.createElement('th');
+            th.textContent = column;
+            headerRow.appendChild(th);
+        });
+        
+        // Tạo body
+        const tableBody = document.getElementById('data-body');
+        data.forEach(row => {
+            const tr = document.createElement('tr');
+            
+            columns.forEach(column => {
+                const td = document.createElement('td');
+                td.textContent = row[column];
+                tr.appendChild(td);
+            });
+            
+            tableBody.appendChild(tr);
+        });
+    }
+    
+    // Khởi tạo bảng khi trang tải xong
+    document.addEventListener('DOMContentLoaded', function() {
+        populateTable(data);
+    });
+</script>
+{% endblock %}
