@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, request, jsonify, url_for, send_from_directory
 import joblib
 import pandas as pd
+import plotly.express as px
 
 # Khởi tạo Flask app với đường dẫn đúng cho thư mục static
 app = Flask(__name__, static_folder='static')
@@ -78,17 +79,15 @@ def index():
     
     return render_template('index.html', result=result, prediction_text=prediction_text, form_data=form_data)
 
-@app.route('/visualization')
+@app.route('/visualization', methods=['GET', 'POST'])
 def visualization():
-    # Đọc và xử lý dữ liệu
     df = pd.read_csv("Covid Data.csv")
 
-    # Làm sạch dữ liệu
+    # Làm sạch như trước
     cols = ['PNEUMONIA', 'DIABETES', 'COPD', 'ASTHMA', 'INMSUPR', 'HIPERTENSION',
             'OTHER_DISEASE', 'CARDIOVASCULAR', 'OBESITY', 'RENAL_CHRONIC', 'TOBACCO']
     for i in cols:
         df = df[(df[i] == 1) | (df[i] == 2)]
-
     df['DEATH'] = df['DATE_DIED'].apply(lambda x: 2 if x == "9999-99-99" else 1)
     df.drop(columns=["DATE_DIED"], inplace=True)
     df['PREGNANT'] = df['PREGNANT'].replace(97, 2)
@@ -96,10 +95,16 @@ def visualization():
     df['CLASIFFICATION_FINAL'] = df['CLASIFFICATION_FINAL'].replace([1, 2, 3], 1)
     df['CLASIFFICATION_FINAL'] = df['CLASIFFICATION_FINAL'].replace([4, 5, 6, 7], 2)
     
+    selected_var = request.form.get('variable') if request.method == 'POST' else 'AGE'
+    
+    import plotly.express as px
+    fig = px.histogram(df, x=selected_var, color="DEATH", barmode="group")
+    chart_html = fig.to_html(full_html=False)
+    
     # Chuyển DataFrame thành dạng JSON để hiển thị
     data_json = df.head(100).to_json(orient='records')
     
-    return render_template('visualization.html', data_json=data_json)
+    return render_template('visualization.html', data_json=data_json, chart_html=chart_html, selected_var=selected_var)
 
 if __name__ == '__main__':
     app.run(debug=True)

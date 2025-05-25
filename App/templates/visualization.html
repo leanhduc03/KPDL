@@ -8,6 +8,21 @@
 <div class="card">
     <h2 class="mb-4">Trực quan hóa dữ liệu bệnh nhân</h2>
     <p>Dữ liệu bên dưới đã được xử lý và sẵn sàng cho việc khám phá:</p>
+
+    <form method="POST" class="mb-3">
+    <label for="variable">Chọn biến cần trực quan:</label>
+    <select name="variable" id="variable" onchange="this.form.submit()">
+        <option value="AGE" {% if selected_var == 'AGE' %}selected{% endif %}>AGE</option>
+        <option value="PNEUMONIA" {% if selected_var == 'PNEUMONIA' %}selected{% endif %}>PNEUMONIA</option>
+        <option value="DIABETES" {% if selected_var == 'DIABETES' %}selected{% endif %}>DIABETES</option>
+        <option value="HIPERTENSION" {% if selected_var == 'HIPERTENSION' %}selected{% endif %}>HIPERTENSION</option>
+        <option value="CLASIFFICATION_FINAL" {% if selected_var == 'CLASIFFICATION_FINAL' %}selected{% endif %}>CLASIFFICATION_FINAL</option>
+    </select>
+    </form>
+
+    <div>
+        {{ chart_html|safe }}
+    </div>
     
     <div class="viz-container">
         <div class="table-responsive">
