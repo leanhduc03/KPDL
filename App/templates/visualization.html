@@ -13,11 +13,28 @@
     <label for="variable">Chọn biến cần trực quan:</label>
     <select name="variable" id="variable" onchange="this.form.submit()">
         <option value="AGE" {% if selected_var == 'AGE' %}selected{% endif %}>AGE</option>
-        <option value="PNEUMONIA" {% if selected_var == 'PNEUMONIA' %}selected{% endif %}>PNEUMONIA</option>
+        <option value="ASTHMA" {% if selected_var == 'ASTHMA' %}selected{% endif %}>ASTHMA</option>
+        <option value="CARDIOVASCULAR" {% if selected_var == 'CARDIOVASCULAR' %}selected{% endif %}>CARDIOVASCULAR</option>
+        <option value="CLASIFFICATION_FINAL" {% if selected_var == 'CLASIFFICATION_FINAL' %}selected{% endif %}>CLASIFFICATION_FINAL</option>
+        <option value="COPD" {% if selected_var == 'COPD' %}selected{% endif %}>COPD</option>
+        <option value="DEATH" {% if selected_var == 'DEATH' %}selected{% endif %}>DEATH</option>
         <option value="DIABETES" {% if selected_var == 'DIABETES' %}selected{% endif %}>DIABETES</option>
         <option value="HIPERTENSION" {% if selected_var == 'HIPERTENSION' %}selected{% endif %}>HIPERTENSION</option>
-        <option value="CLASIFFICATION_FINAL" {% if selected_var == 'CLASIFFICATION_FINAL' %}selected{% endif %}>CLASIFFICATION_FINAL</option>
+        <option value="ICU" {% if selected_var == 'ICU' %}selected{% endif %}>ICU</option>
+        <option value="INMSUPR" {% if selected_var == 'INMSUPR' %}selected{% endif %}>INMSUPR</option>
+        <option value="INTUBED" {% if selected_var == 'INTUBED' %}selected{% endif %}>INTUBED</option>
+        <option value="MEDICAL_UNIT" {% if selected_var == 'MEDICAL_UNIT' %}selected{% endif %}>MEDICAL_UNIT</option>
+        <option value="OBESITY" {% if selected_var == 'OBESITY' %}selected{% endif %}>OBESITY</option>
+        <option value="OTHER_DISEASE" {% if selected_var == 'OTHER_DISEASE' %}selected{% endif %}>OTHER_DISEASE</option>
+        <option value="PATIENT_TYPE" {% if selected_var == 'PATIENT_TYPE' %}selected{% endif %}>PATIENT_TYPE</option>
+        <option value="PNEUMONIA" {% if selected_var == 'PNEUMONIA' %}selected{% endif %}>PNEUMONIA</option>
+        <option value="PREGNANT" {% if selected_var == 'PREGNANT' %}selected{% endif %}>PREGNANT</option>
+        <option value="RENAL_CHRONIC" {% if selected_var == 'RENAL_CHRONIC' %}selected{% endif %}>RENAL_CHRONIC</option>
+        <option value="SEX" {% if selected_var == 'SEX' %}selected{% endif %}>SEX</option>
+        <option value="TOBACCO" {% if selected_var == 'TOBACCO' %}selected{% endif %}>TOBACCO</option>
+        <option value="USMER" {% if selected_var == 'USMER' %}selected{% endif %}>USMER</option>
     </select>
+
     </form>
 
     <div>
