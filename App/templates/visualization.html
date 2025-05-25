@@ -6,11 +6,11 @@
 
 {% block content %}
 <div class="card">
-    <h2 class="mb-4">Trực quan hóa dữ liệu bệnh nhân</h2>
-    <p>Dữ liệu bên dưới đã được xử lý và sẵn sàng cho việc khám phá:</p>
+    <h2 class="mb-4">Patient Data Visualization</h2>
+    <p>The data below has been processed and is ready for exploration:</p>
 
     <form method="POST" class="mb-3">
-    <label for="variable">Chọn biến cần trực quan:</label>
+    <label for="variable">Select variable to visualize:</label>
     <select name="variable" id="variable" onchange="this.form.submit()">
         <option value="AGE" {% if selected_var == 'AGE' %}selected{% endif %}>AGE</option>
         <option value="ASTHMA" {% if selected_var == 'ASTHMA' %}selected{% endif %}>ASTHMA</option>
@@ -56,12 +56,12 @@
 
 {% block scripts %}
 <script>
-    // Nhận dữ liệu JSON
+    // Receive JSON data
     const data = JSON.parse('{{ data_json|safe }}');
     
-    // Hiển thị bảng dữ liệu
+    // Display data table
     function populateTable(data) {
-        // Tạo header
+        // Create header
         const headerRow = document.getElementById('header-row');
         const columns = Object.keys(data[0]);
         
@@ -71,7 +71,7 @@
             headerRow.appendChild(th);
         });
         
-        // Tạo body
+        // Create body
         const tableBody = document.getElementById('data-body');
         data.forEach(row => {
             const tr = document.createElement('tr');
@@ -86,7 +86,7 @@
         });
     }
     
-    // Khởi tạo bảng khi trang tải xong
+    // Initialize table when the page has loaded
     document.addEventListener('DOMContentLoaded', function() {
         populateTable(data);
     });
